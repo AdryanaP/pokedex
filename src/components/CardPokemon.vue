@@ -1,7 +1,7 @@
 <template>
-  <div class="card-pokemon">
+  <div class="card-pokemon card-evolution">
       <img :src="pokemon.img" alt="imagem pokemon" class="img-pokemon" />
-      <h3>{{ pokemon.name }}</h3>
+      <h3 class="name-pokemon">{{ pokemon.name }}</h3>
   </div>
 </template>
 
@@ -34,3 +34,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.card-evolution {
+  cursor: pointer;
+  padding: 2rem;
+}
+</style>
