@@ -13,3 +13,10 @@ export default {
 }
 </script>
 
+<style>
+@font-face {
+  font-family: "Pokemon";
+  src: local("Pokemon"),
+   url("~@/assets/fonts/PokemonHollowNormal-pyPZ.ttf") format("truetype");
+}
+</style>

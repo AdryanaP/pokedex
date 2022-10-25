@@ -222,7 +222,7 @@ body,
 }
 
 h1 {
-  font-family: "Pokemon Hollow", sans-serif;
+  font-family: "Pokemon", sans-serif;
   font-size: 48px;
 }
 
