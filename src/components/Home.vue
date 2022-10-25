@@ -6,7 +6,7 @@
       alt="marca d'agua pokebola"
       id="img-pokeball"
     />
-    <form class="search-pokemon">
+    <form id="search-pokemon">
       <input type="text" v-model="searchPokemon" />
       <button @click.prevent="getPokemon(searchPokemon)" type="submit">
         <font-awesome-icon
@@ -32,7 +32,7 @@
             >
           </div>
 
-          <div class="attr-pokemon">
+          <div id="attr-pokemon">
             <p><span class="attr-title">HP:</span> {{ pokemon.attr.hp }}</p>
             <p>
               <span class="attr-title">Speed:</span> {{ pokemon.attr.speed }}
@@ -56,9 +56,9 @@
         </div>
       </div>
       <h4 v-if="evolutionStage1.length || evolutionStage2.length">
-        Evoluçoes:
+        Evoluções:
       </h4>
-      <section class="section-evolutions">
+      <section id="section-evolutions">
         <card-pokemon
           v-for="evolution in evolutionStage1"
           :key="evolution.species.name"
@@ -118,8 +118,11 @@ export default {
       })
         .then((res) => res.json())
         .then((res) => {
+          // Resetando dados
           this.pokemon.types = [];
           this.error = false;
+
+          // Coletando dados da resposta
           this.pokemon.name = res.name;
           this.pokemon.img = res.sprites.front_default;
           this.pokemon.status = true;
@@ -129,14 +132,15 @@ export default {
           this.pokemon.attr.specialAttack = res.stats[3].base_stat;
           this.pokemon.attr.specialDefense = res.stats[4].base_stat;
           this.pokemon.attr.speed = res.stats[5].base_stat;
-          this.error = false;
           res.types.forEach((type) => {
             this.pokemon.types.push(type.type.name);
           });
+
+          this.error = false;
           this.getSpecies(res.name);
-          console.log(res);
         })
         .catch(() => {
+          // Setando aviso de erro
           this.error = true;
           setTimeout(() => {
             this.error = false;
@@ -154,13 +158,16 @@ export default {
         });
     },
     getEvolutions(pokemonName) {
+      // Resetando dados
       this.evolutionStage1 = [];
       this.evolutionStage2 = [];
+
       fetch(this.evolutionLink, {
         method: "GET",
       })
         .then((res) => res.json())
         .then((res) => {
+          // Verificando se o pokemon tem evoluções
           if (
             res.chain.evolves_to.length === 1 &&
             res.chain.evolves_to[0].evolves_to.length > 0
@@ -168,6 +175,7 @@ export default {
             const stage1Name = res.chain.evolves_to[0].species.name;
             const stage2Name =
               res.chain.evolves_to[0].evolves_to[0].species.name;
+            // Verificando se o pokemon de evolução é o mesmo que o pesquisado
             if (pokemonName === stage1Name) {
               this.evolutionStage2 = res.chain.evolves_to[0].evolves_to;
             } else if (pokemonName != stage2Name) {
@@ -188,18 +196,9 @@ export default {
 @import url("http://fonts.cdnfonts.com/css/pok");
 
 html {
-  background: #6a3093; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #a044ff,
-    #6a3093
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #a044ff,
-    #6a3093
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+  background: #6a3093;
+  background: -webkit-linear-gradient(to right, #a044ff, #6a3093);
+  background: linear-gradient(to right, #a044ff, #6a3093);
   background-repeat: no-repeat;
   font-family: "Poppins", sans-serif;
   color: white;
@@ -215,7 +214,7 @@ body {
 
 h1,
 body,
-.search-pokemon {
+#search-pokemon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -240,13 +239,13 @@ header {
   z-index: -1;
 }
 
-.search-pokemon {
+#search-pokemon {
   display: flex;
   margin: 1rem;
   gap: 1rem;
 }
 
-.search-pokemon input {
+#search-pokemon input {
   padding: 0.5rem;
   border: 0;
   border-bottom: 2px solid white;
@@ -255,13 +254,13 @@ header {
   color: white;
 }
 
-.search-pokemon button {
+#search-pokemon button {
   background: transparent;
   border: 0;
   cursor: pointer;
 }
 
-.section-evolutions {
+#section-evolutions {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 3rem;
@@ -302,7 +301,7 @@ header {
   text-transform: capitalize;
 }
 
-.attr-pokemon {
+#attr-pokemon {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   background: #ffffff1f;
@@ -337,7 +336,7 @@ h4 {
   h1 {
     font-size: 39px;
   }
-  .section-evolutions {
+  #section-evolutions {
     grid-template-columns: auto;
   }
   .card-pokemon {
@@ -358,13 +357,9 @@ h4 {
   #searched-pokemon .img-pokemon {
     width: 50vw;
   }
-  .attr-pokemon {
+  #attr-pokemon {
     background: transparent;
     padding: 0;
   }
-}
-
-@media (max-width: 860px) {
-
 }
 </style>
